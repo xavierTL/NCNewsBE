@@ -1,3 +1,3 @@
 exports.config = {
-  PORT: 9090
+  PORT: 9090,
 };

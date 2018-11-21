@@ -4,8 +4,9 @@
   "description": "## Northcoders News API",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha spec",
     "lint": "eslint ./",
+    "lint:fix" : "eslint --fix ./",
     "pre-commit": "npm t",
     "posttest": "npm run lint",
     "build": "npx knex migrate:latest",
@@ -32,7 +33,6 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "eslint": "^5.9.0",
     "husky": "^1.1.4",
     "mocha": "^5.2.0",
     "supertest": "^3.3.0"
