@@ -1,7 +1,4 @@
-/* eslint "no-console" : 0 */
-
 exports.up = function (knex, Promise) {
-  console.log('creating topics...');
   return knex.schema.createTable('topics', (table) => {
     table
       .string('slug')
@@ -13,6 +10,5 @@ exports.up = function (knex, Promise) {
 };
 
 exports.down = function (knex, Promise) {
-  console.log('dropping topics table...');
   return knex.schema.dropTable('topics');
 };

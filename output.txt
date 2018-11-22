@@ -1,3 +1,20 @@
-Using environment: development
-[ { description: 'The man, the Mitch, the legend', slug: 'mitch' },
-  { description: 'Not dogs', slug: 'cats' } ]
+
+
+  /api
+    /*
+{ msg: 'silly! no pages here' }
+      1) returns 404 for non-existant route
+
+
+  0 passing (289ms)
+  1 failing
+
+  1) /api
+       /*
+         returns 404 for non-existant route:
+     AssertionError: expected { msg: 'silly! no pages here' } to deeply equal 'silly! no pages here'
+      at request.get.expect.then (spec/app.spec.js:21:34)
+      at process._tickCallback (internal/process/next_tick.js:68:7)
+
+
+

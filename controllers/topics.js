@@ -1,6 +1,5 @@
 const connection = require('../db/connection');
 const { cl } = require('../utils/utils');
-const { handle400s } = require('../errors');
 
 exports.getAllTopics = (req, res, next) => {
   connection('topics')
@@ -8,19 +7,15 @@ exports.getAllTopics = (req, res, next) => {
     .then((topics) => {
       res.send({ topics });
     })
-    .catch(console.log);
+    .catch(next);
 };
 
 exports.postToTopics = (req, res, next) => {
-  bc('posting');
   connection('topics')
     .insert(req.body)
     .returning('*')
-    .then((out) => {
-      if (out[0]) {
-        const posted = out[0];
-        res.status(201).send({ posted });
-      } else return Promise.reject({ status: 404 });
+    .then(([out]) => {
+      res.status(201).send({ out });
     })
     .catch(next);
 };
@@ -42,14 +37,25 @@ exports.getArticlesByTopic = (req, res, next) => {
     )
     .limit(limit || 10)
     .join('users', 'users.user_id', '=', 'articles.user_id')
-    .join('comments', 'comments.article_id', '=', 'articles.article_id')
+    .leftJoin('comments', 'comments.article_id', '=', 'articles.article_id')
     .where('topic', '=', topic)
     .groupBy('articles.article_id', 'users.username')
-    .count('articles.article_id AS comment_count')
+    .count('comments.comment_id AS comment_count')
     .orderBy(criteria || 'articles.created_at', sort)
     .offset(p || 0)
     .then((articles) => {
       res.send(articles);
     })
-    .catch(console.log);
+    .catch(next);
+};
+
+exports.postArticleByTopic = (req, res, next) => {
+  req.body.topic = req.params.topic;
+  connection('articles')
+    .insert(req.body)
+    .returning('*')
+    .then(([postedData]) => {
+      res.status(201).send(postedData);
+    })
+    .catch(next);
 };

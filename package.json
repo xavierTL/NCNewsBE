@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha spec",
     "lint": "eslint ./",
-    "lint:fix" : "eslint --fix ./",
+    "lint:fix": "eslint --fix ./",
     "pre-commit": "npm t",
     "posttest": "npm run lint",
     "build": "npx knex migrate:latest",

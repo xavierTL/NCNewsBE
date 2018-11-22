@@ -1,3 +1,5 @@
+/* eslint "no-console" : 0 */
+
 const validateTime = timeStamp => new Date(timeStamp);
 
 exports.validateArticle = (rawArticle, rawUser) => rawArticle.reduce((validData, article) => {
@@ -38,14 +40,14 @@ exports.validateComment = (rawArticle, rawUser, rawComments) => {
 
 exports.cl = (input) => {
   console.log(' ');
-  console.log('--***----***----***----***--');
-  console.log('-*****--*****--*****--*****-');
-  console.log('***-******-******-******=***');
+  console.log('--***----***----***----***----***----***----***----***--');
+  console.log('-*****--*****--*****--*****--*****--*****--*****--*****-');
+  console.log('***-******-******-******-******-******-******-******-***');
   console.log(' ');
-  console.log(input);
+  console.log('       ', input, '            ..');
   console.log(' ');
-  console.log('***-******-******-******-***');
-  console.log('-*****--*****--*****--*****-');
-  console.log('--***----***----***----***--');
+  console.log('***-******-******-******-******-******-******-******-***');
+  console.log('-*****--*****--*****--*****--*****--*****--*****--*****-');
+  console.log('--***----***----***----***----***----***----***----***--');
   console.log(' ');
 };

@@ -1,7 +1,4 @@
-/* eslint "no-console" : 0 */
-
 exports.up = function (knex, Promise) {
-  console.log('creating users...');
   return knex.schema.createTable('users', (table) => {
     table
       .increments('user_id')
@@ -14,6 +11,5 @@ exports.up = function (knex, Promise) {
 };
 
 exports.down = function (knex, Promise) {
-  console.log('droppping users table...');
   return knex.schema.dropTable('users');
 };

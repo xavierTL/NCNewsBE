@@ -1,10 +1,21 @@
 exports.handle400s = (err, req, res, next) => {
-  const codesRef400 = { 23502: 'null value in column "slug" violates not-null constraint' };
+  const codesRef400 = {
+    23502: 'null value in column violates not-null constraint',
+    '22P02': 'invalid input syntax for data type',
+  };
   if (codesRef400[err.code]) {
     res.status(400).send({ msg: codesRef400[err.code] });
   } else next(err);
 };
 
-exports.handler405 = (err, req, res, next) => {};
+exports.handle404s = (err, req, res, next) => {
+  if (err.status === 404 || err.code === '23503') {
+    res.status(404).send({ msg: 'silly! no pages here' });
+  } else {
+    next(err);
+  }
+};
 
-// exports.handle
+exports.handle405s = (req, res, next) => {
+  res.status(405).send({ msg: 'method not allowed' });
+};
