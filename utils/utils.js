@@ -44,10 +44,15 @@ exports.cl = (input) => {
   console.log('-*****--*****--*****--*****--*****--*****--*****--*****-');
   console.log('***-******-******-******-******-******-******-******-***');
   console.log(' ');
-  console.log('       ', input, '            ..');
+  console.log('       ', input);
   console.log(' ');
   console.log('***-******-******-******-******-******-******-******-***');
   console.log('-*****--*****--*****--*****--*****--*****--*****--*****-');
   console.log('--***----***----***----***----***----***----***----***--');
   console.log(' ');
+};
+
+exports.checkParam = (req, res, next, endpoint) => {
+  if (/^\d+$/.test(endpoint)) next();
+  else next({ code: '22P02' });
 };

@@ -20,7 +20,6 @@ describe('/api', () => {
         expect(body.msg).to.eql('silly! no pages here');
       }));
   });
-
   describe('/topics', () => {
     it('GET returns status 200 and all topics in array', () => request
       .get('/api/topics')
@@ -30,8 +29,6 @@ describe('/api', () => {
         expect(Array.isArray(body.topics)).to.eql(true);
         expect(body.topics[0]).to.have.all.keys(['slug', 'description']);
       }));
-    // test for wrong method on /topics
-    // it.only('GET returns')
     it('POST returns status 201 and new topic posted when all inputs valid', () => {
       const input = { slug: 'xav', description: 'Xav is losing the will to live' };
       return request
@@ -39,7 +36,7 @@ describe('/api', () => {
         .send(input)
         .expect(201)
         .then(({ body }) => {
-          expect(body).to.eql({ posted: input });
+          expect(body[0]).to.eql({ slug: 'xav', description: 'Xav is losing the will to live' });
         });
     });
     it('POST returns status 400 and err message when sent malformed req body', () => {
@@ -49,7 +46,7 @@ describe('/api', () => {
         .send(input)
         .expect(400)
         .then(({ body }) => {
-          expect(body).to.eql({ msg: 'null value in column "slug" violates not-null constraint' });
+          expect(body).to.eql({ msg: 'null value in column violates not-null constraint' });
         });
     });
     describe('GET /topics/:topic/articles', () => {
@@ -147,80 +144,6 @@ describe('/api', () => {
         .expect(400)
         .then(({ body }) => {
           expect(body.msg).to.eql('invalid input syntax for data type');
-        }));
-    });
-  });
-
-  describe.only('/articles', () => {
-    it('400s with invalid data type of parametric endpoint', () => request
-      .get('/api/articles/Madonna')
-      .expect(400)
-      .then(({ body }) => {
-        expect(body.msg).to.equal('invalid input syntax for data type');
-      }));
-    it.only('404s with invalid data type of parametric endpoint', () => request
-      .get('/api/articles/234')
-      .expect(404)
-      .then(({ body }) => {
-        expect(body.msg).to.equal('silly! no pages here');
-      }));
-    it('405s with any invalid method', () => request
-      .post('/api/articles')
-      .send('can I post pls?')
-      .expect(405)
-      .then(({ body }) => {
-        expect(body.msg).to.equal('method not allowed');
-      }));
-
-    describe('GET', () => {
-      it('returns 200 and array of articles with correct keys', () => request
-        .get('/api/articles')
-        .expect(200)
-        .then(({ body }) => {
-          expect(body[0]).to.have.all.keys([
-            'author',
-            'title',
-            'article_id',
-            'votes',
-            'comment_count',
-            'created_at',
-            'topic',
-          ]);
-        }));
-      it('returns array limited to limit query', () => request
-        .get('/api/articles?limit=1')
-        .expect(200)
-        .then(({ body }) => {
-          expect(body.length).to.eql(1);
-        }));
-      it('sorts by date, desc when no order or criteria specified in query', () => request
-        .get('/api/articles')
-        .expect(200)
-        .then(({ body }) => {
-          expect(body[0].created_at).to.equal('2018-11-15T12:21:54.171Z');
-          expect(body[9].created_at).to.equal('2017-07-20T20:57:53.256Z');
-        }));
-      it('sorts by date, asc when passed sort_ascending=true query', () => request
-        .get('/api/articles?sort_ascending=true')
-        .expect(200)
-        .then(({ body }) => {
-          expect(body[0].created_at).to.equal('1970-01-01T00:00:00.001Z');
-          expect(body[9].created_at).to.equal('2017-12-24T05:38:51.243Z');
-        }));
-      it('sorts by other criteria when passed criteria as query', () => request
-        .get('/api/articles?criteria=title')
-        .expect(200)
-        .then(({ body }) => {
-          expect(body[0].title).to.equal('Z');
-          expect(body[9].title).to.equal('Does Mitch predate civilisation?');
-        }));
-      it('starts at page n when passed n as query', () => request
-        .get('/api/articles?p=2')
-        .expect(200)
-        .then(({ body }) => {
-          const { author } = body[0];
-          expect(author).to.equal('icellusedkars');
-          expect(body.length).to.equal(10);
         }));
     });
   });

@@ -5,7 +5,10 @@ exports.up = function (knex, Promise) {
       .primary()
       .notNullable();
     table.integer('user_id').references('users.user_id');
-    table.integer('article_id').references('articles.article_id');
+    table
+      .integer('article_id')
+      .references('articles.article_id')
+      .onDelete('CASCADE');
     table
       .integer('votes')
       .defaultTo(0)
