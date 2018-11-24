@@ -1,5 +1,4 @@
 const connection = require('../db/connection');
-const { cl } = require('../utils/utils');
 
 exports.getArticles = (req, res, next) => {
   const {
@@ -78,12 +77,17 @@ exports.patchArticle = (req, res, next) => {
     })
     .catch(next);
 };
-exports.deleteArticle = (req, res, end) => {
+exports.deleteArticle = (req, res, next) => {
   const { article_id } = req.params;
   connection('articles')
     .where('article_id', '=', article_id)
     .del()
-    .then(() => {
+    .returning('*')
+    .then((out) => {
+      if (out.length === 0) {
+        return next({ status: 404 });
+      }
       res.status(200).send({});
-    });
+    })
+    .catch(next);
 };

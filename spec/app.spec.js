@@ -14,6 +14,12 @@ describe('/api', () => {
   after(() => connection.destroy());
   describe('/*', () => {
     it('returns 404 for non-existant route', () => request
+      .get('/Madonna')
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).to.eql('silly! no pages here');
+      }));
+    it('returns 404 for non-existant api sub-routeroute', () => request
       .get('/api/Madonna')
       .expect(404)
       .then(({ body }) => {
@@ -21,33 +27,58 @@ describe('/api', () => {
       }));
   });
   describe('/topics', () => {
-    it('GET returns status 200 and all topics in array', () => request
-      .get('/api/topics')
-      .expect(200)
-      .then(({ body }) => {
-        expect(Object.keys(body)).to.eql(['topics']);
-        expect(Array.isArray(body.topics)).to.eql(true);
-        expect(body.topics[0]).to.have.all.keys(['slug', 'description']);
-      }));
-    it('POST returns status 201 and new topic posted when all inputs valid', () => {
-      const input = { slug: 'xav', description: 'Xav is losing the will to live' };
-      return request
+    describe('GET/POST', () => {
+      const input = {
+        slug: 'xav',
+        description: 'Xav is losing the will to live',
+      };
+      it('GET returns status 200 and all topics in array', () => request
+        .get('/api/topics')
+        .expect(200)
+        .then(({ body }) => {
+          expect(Object.keys(body)).to.eql(['topics']);
+          expect(Array.isArray(body.topics)).to.eql(true);
+          expect(body.topics[0]).to.have.all.keys(['slug', 'description']);
+        }));
+      it('incorrect METHOD returns 405 and error message', () => {
+        const invalidMethods = ['delete', 'put', 'patch'];
+        return Promise.all(
+          invalidMethods.map(method => request[method]('/api/topics')
+            .expect(405)
+            .then(({ body }) => {
+              expect(body.msg).to.equal('method not allowed');
+            })),
+        );
+      });
+      it('POST returns status 201 and new topic posted when all inputs valid', () => request
         .post('/api/topics')
         .send(input)
         .expect(201)
         .then(({ body }) => {
-          expect(body[0]).to.eql({ slug: 'xav', description: 'Xav is losing the will to live' });
-        });
-    });
-    it('POST returns status 400 and err message when sent malformed req body', () => {
-      const input = { description: 'Xav is making no progress' };
-      return request
-        .post('/api/topics')
+          expect(body[0]).to.eql({
+            slug: 'xav',
+            description: 'Xav is losing the will to live',
+          });
+        }));
+      it('POST returns status 400 and err message when sent malformed req body', () => {
+        const invalidInput = { description: 'Xav is making no progress' };
+        return request
+          .post('/api/topics')
+          .send(invalidInput)
+          .expect(400)
+          .then(({ body }) => {
+            expect(body).to.eql({
+              msg: 'null value in column violates not-null constraint',
+            });
+          });
+      });
+      it('POST returns status 404 when path invalid', () => request
+        .post('/api/Madonna')
         .send(input)
-        .expect(400)
+        .expect(404)
         .then(({ body }) => {
-          expect(body).to.eql({ msg: 'null value in column violates not-null constraint' });
-        });
+          expect(body).to.eql({ msg: 'silly! no pages here' });
+        }));
     });
     describe('GET /topics/:topic/articles', () => {
       it('returns array with correct keys', () => request
@@ -101,9 +132,31 @@ describe('/api', () => {
           expect(author).to.equal('icellusedkars');
           expect(body.length).to.equal(2);
         }));
+      describe('ERRORS', () => {
+        it('returns 404 if topic doesnt exist', () => request
+          .get('/api/topics/madonna/articles')
+          .expect(404)
+          .then(({ body }) => {
+            expect(body.msg).to.eql('silly! no pages here');
+          }));
+        it('incorrect METHOD returns 405 and error message', () => {
+          const invalidMethods = ['delete', 'put', 'patch'];
+          return Promise.all(
+            invalidMethods.map(method => request[method]('/api/topics/cats/articles')
+              .expect(405)
+              .then(({ body }) => {
+                expect(body.msg).to.equal('method not allowed');
+              })),
+          );
+        });
+      });
     });
     describe('POST /topics/:topic/articles', () => {
-      const newArticle = { title: 'happiness', body: 'is merely an ideal', user_id: 1 };
+      const newArticle = {
+        title: 'happiness',
+        body: 'is merely an ideal',
+        user_id: 1,
+      };
       const url = '/api/topics/cats/articles';
       it('adds new article to specified topic', () => request
         .post(url)

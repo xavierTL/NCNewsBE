@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha spec",
+    "dev": "nodemon listen.js",
     "start": "node listen.js",
     "lint": "eslint ./",
     "lint:fix": "eslint --fix ./",
@@ -31,6 +32,8 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "eslint": "^5.9.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "express": "^4.16.4",
     "heroku": "^7.18.9",
     "knex": "^0.15.2",

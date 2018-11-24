@@ -6,7 +6,7 @@ const app = require('../app');
 const request = supertest(app);
 const connection = require('../db/connection');
 
-describe('/articles', () => {
+describe.only('/articles', () => {
   beforeEach(() => connection.migrate
     .rollback()
     .then(() => connection.migrate.latest())
@@ -167,13 +167,25 @@ describe('/articles', () => {
           expect(body.msg).to.equal('silly! no pages here');
         }));
     });
-    describe('DELETE', () => {
+    describe.only('DELETE', () => {
       it('deletes article by id', () => request
         .delete('/api/articles/1')
         .expect(200)
         .then(({ body }) => {
           expect(body).to.eql({});
           return request.get('/api/articles/1').expect(404);
+        }));
+      it('404s where no article', () => request
+        .delete('/api/articles/12344')
+        .expect(404)
+        .then(({ body }) => {
+          expect(body).to.eql({ msg: 'silly! no pages here' });
+        }));
+      it('400s where invalid parametric', () => request
+        .delete('/api/articles/Madonna')
+        .expect(400)
+        .then(({ body }) => {
+          expect(body).to.eql({ msg: 'invalid input syntax for data type' });
         }));
     });
   });

@@ -6,5 +6,7 @@ const usersRouter = require('./users');
 apiRouter.use('/topics', topicsRouter);
 apiRouter.use('/articles', articlesRouter);
 apiRouter.use('/users', usersRouter);
-
+apiRouter.use('/*', (req, res, next) => {
+  next({ status: 404 });
+});
 module.exports = apiRouter;

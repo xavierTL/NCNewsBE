@@ -1,5 +1,4 @@
 const connection = require('../db/connection');
-const { cl } = require('../utils/utils');
 
 exports.getCommentsByArticleId = (req, res, next) => {
   const { article_id } = req.params;
@@ -41,6 +40,9 @@ exports.postCommentByArticleId = (req, res, next) => {
 
 exports.patchComment = (req, res, next) => {
   const { inc_votes } = req.body;
+  if (typeof inc_votes !== 'number') {
+    next({ status: 400 });
+  }
   const { article_id, comment_id } = req.params;
   connection('comments')
     .where('article_id', '=', article_id)
@@ -48,6 +50,9 @@ exports.patchComment = (req, res, next) => {
     .increment('votes', inc_votes)
     .returning('*')
     .then((updatedComment) => {
+      if (updatedComment.length === 0) {
+        return next({ status: 404 });
+      }
       res.status(201).send(updatedComment);
     })
     .catch(next);
@@ -59,7 +64,11 @@ exports.deleteComment = (req, res, next) => {
     .where('article_id', '=', article_id)
     .andWhere('comment_id', '=', comment_id)
     .del()
-    .then(() => {
+    .returning('*')
+    .then((response) => {
+      if (response.length === 0) {
+        return next({ status: 404 });
+      }
       res.status(204).send({});
     })
     .catch(next);

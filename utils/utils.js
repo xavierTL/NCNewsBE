@@ -56,3 +56,8 @@ exports.checkParam = (req, res, next, endpoint) => {
   if (/^\d+$/.test(endpoint)) next();
   else next({ code: '22P02' });
 };
+
+exports.checkParamStr = (req, res, next, endpoint) => {
+  if (/^\d+$/.test(endpoint)) next();
+  else next({ code: '22P02' });
+};

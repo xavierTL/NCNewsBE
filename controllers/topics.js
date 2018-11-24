@@ -1,5 +1,4 @@
 const connection = require('../db/connection');
-const { cl } = require('../utils/utils');
 
 exports.getAllTopics = (req, res, next) => {
   connection('topics')
@@ -44,6 +43,9 @@ exports.getArticlesByTopic = (req, res, next) => {
     .orderBy(criteria || 'articles.created_at', sort)
     .offset(p || 0)
     .then((articles) => {
+      if (articles.length === 0) {
+        return next({ status: 404 });
+      }
       res.send(articles);
     })
     .catch(next);
