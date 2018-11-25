@@ -5,19 +5,18 @@ const app = require('../app');
 
 const request = supertest(app);
 const connection = require('../db/connection');
+const { out } = require('../controllers/api');
 
-describe('/api', () => {
+describe.only('/api', () => {
   beforeEach(() => connection.migrate
     .rollback()
     .then(() => connection.migrate.latest())
     .then(() => connection.seed.run()));
   after(() => connection.destroy());
   describe('GET /api', () => {
-    it('returns JSON obj containing map of API', () => {
-      return request.get('/api/').expect(200).then(({ body }) => {
-        expect(body).to.eql({});
-      });
-    });
+    it('returns JSON obj containing map of API', () => request.get('/api/').expect(200).then(({ body }) => {
+      expect(body).to.eql(out);
+    }));
   });
   describe('/*', () => {
     it('returns 404 for non-existant route', () => request

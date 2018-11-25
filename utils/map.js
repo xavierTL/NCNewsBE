@@ -1,4 +1,4 @@
-const map = {
+exports.map = {
   '/api': {
     GET: 'return this map',
     '/topics': {
@@ -28,5 +28,3 @@ const map = {
     '/users': { GET: 'all users', '/:username': { GET: 'user' } },
   },
 };
-
-exports.jsonMap = JSON.stringify(map);
