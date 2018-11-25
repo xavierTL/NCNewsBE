@@ -87,7 +87,7 @@ exports.deleteArticle = (req, res, next) => {
       if (out.length === 0) {
         return next({ status: 404 });
       }
-      res.status(200).send({});
+      res.status(204).send({});
     })
     .catch(next);
 };

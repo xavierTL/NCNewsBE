@@ -39,30 +39,28 @@ exports.postCommentByArticleId = (req, res, next) => {
 };
 
 exports.patchComment = (req, res, next) => {
+  const { comment_id } = req.params;
   const { inc_votes } = req.body;
   if (typeof inc_votes !== 'number') {
     next({ status: 400 });
   }
-  const { article_id, comment_id } = req.params;
   connection('comments')
-    .where('article_id', '=', article_id)
-    .andWhere('comment_id', '=', comment_id)
+    .where('comment_id', '=', comment_id)
     .increment('votes', inc_votes)
     .returning('*')
     .then((updatedComment) => {
       if (updatedComment.length === 0) {
         return next({ status: 404 });
       }
-      res.status(201).send(updatedComment);
+      res.status(200).send(updatedComment);
     })
     .catch(next);
 };
 
 exports.deleteComment = (req, res, next) => {
-  const { article_id, comment_id } = req.params;
+  const { comment_id } = req.params;
   connection('comments')
-    .where('article_id', '=', article_id)
-    .andWhere('comment_id', '=', comment_id)
+    .where('comment_id', '=', comment_id)
     .del()
     .returning('*')
     .then((response) => {

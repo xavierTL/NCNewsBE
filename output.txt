@@ -1,3 +1,0 @@
-Using environment: development
-Ran 1 seed files 
-/Users/xav/Desktop/NorthCoders/Block3/BE2-NC-Knews/seeds/seed.js

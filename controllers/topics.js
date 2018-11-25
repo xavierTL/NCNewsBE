@@ -46,7 +46,7 @@ exports.getArticlesByTopic = (req, res, next) => {
       if (articles.length === 0) {
         return next({ status: 404 });
       }
-      res.send(articles);
+      res.status(200).send(articles);
     })
     .catch(next);
 };

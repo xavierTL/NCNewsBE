@@ -1,15 +1,12 @@
 const articlesRouter = require('express').Router();
 const {
-  getArticles,
-  getArticle,
-  patchArticle,
-  deleteArticle,
+  getArticles, getArticle, patchArticle, deleteArticle,
 } = require('../controllers/articles');
 const {
   getCommentsByArticleId,
   postCommentByArticleId,
-  patchComment,
-  deleteComment,
+  // patchComment,
+  // deleteComment,
 } = require('../controllers/comments');
 const { handle405s } = require('../errors');
 const { checkParam } = require('../utils/utils');
@@ -33,12 +30,12 @@ articlesRouter
   .post(postCommentByArticleId)
   .all(handle405s);
 
-articlesRouter
-  .param('article_id', checkParam)
-  .param('comment_id', checkParam)
-  .route('/:article_id/comments/:comment_id')
-  .patch(patchComment)
-  .delete(deleteComment)
-  .all(handle405s);
+// articlesRouter
+//   .param('article_id', checkParam)
+//   .param('comment_id', checkParam)
+//   .route('/:article_id/comments/:comment_id')
+//   .patch(patchComment)
+//   .delete(deleteComment)
+//   .all(handle405s);
 
 module.exports = articlesRouter;
