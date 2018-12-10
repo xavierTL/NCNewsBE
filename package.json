@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "## Northcoders News API",
   "main": "index.js",
+  "engines": {
+    "node": "10.10.0"
+  },
   "scripts": {
     "test": "mocha spec",
     "dev": "nodemon listen.js",
@@ -34,6 +37,7 @@
     "eslint": "^5.9.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
+    "event-stream": "^4.0.1",
     "express": "^4.16.4",
     "heroku": "^7.18.9",
     "knex": "^0.15.2",
