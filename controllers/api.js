@@ -1,7 +1,6 @@
 const { map } = require('../utils/map');
 
-const jMap = JSON.stringify(map);
-const out = { map, jMap };
+const out = { map };
 
 exports.getAPI = (req, res, next) => {
   res

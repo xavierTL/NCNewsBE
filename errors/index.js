@@ -15,7 +15,7 @@ exports.handle400s = (err, req, res, next) => {
 
 exports.handle404s = (err, req, res, next) => {
   if (err.status === 404 || err.code === '23503') {
-    res.status(404).send({ msg: 'silly! no pages here' });
+    res.status(404).send({ msg: 'page not found' });
   } else {
     next(err);
   }

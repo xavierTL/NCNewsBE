@@ -22,7 +22,7 @@ exports.getArticles = (req, res, next) => {
     .groupBy('articles.article_id', 'users.username')
     .count('comments.comment_id AS comment_count')
     .then((articles) => {
-      res.status(200).send(articles);
+      res.status(200).send({ articles });
     })
     .catch(next);
 };
@@ -54,7 +54,7 @@ exports.getArticle = (req, res, next) => {
       if (article.length === 0) {
         return next({ status: 404 });
       }
-      res.status(200).send(article);
+      res.status(200).send({ article });
     })
     .catch(next);
 };
@@ -73,7 +73,7 @@ exports.patchArticle = (req, res, next) => {
       if (updatedArticle.length === 0) {
         return next({ status: 404 });
       }
-      res.status(201).send(updatedArticle);
+      res.status(201).send({ updatedArticle });
     })
     .catch(next);
 };

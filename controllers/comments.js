@@ -17,7 +17,7 @@ exports.getCommentsByArticleId = (req, res, next) => {
       if (body.length === 0) {
         return next({ status: 404 });
       }
-      res.status(200).send(body);
+      res.status(200).send({ body });
     })
     .catch(next);
 };
@@ -33,7 +33,7 @@ exports.postCommentByArticleId = (req, res, next) => {
       if (body.length === 0) {
         return next({ status: 404 });
       }
-      res.status(201).send(body);
+      res.status(201).send({ body });
     })
     .catch(next);
 };
@@ -52,7 +52,7 @@ exports.patchComment = (req, res, next) => {
       if (updatedComment.length === 0) {
         return next({ status: 404 });
       }
-      res.status(200).send(updatedComment);
+      res.status(200).send({ updatedComment });
     })
     .catch(next);
 };

@@ -46,7 +46,7 @@ exports.getArticlesByTopic = (req, res, next) => {
       if (articles.length === 0) {
         return next({ status: 404 });
       }
-      res.status(200).send(articles);
+      res.status(200).send({ articles });
     })
     .catch(next);
 };
@@ -57,7 +57,7 @@ exports.postArticleByTopic = (req, res, next) => {
     .insert(req.body)
     .returning('*')
     .then(([postedData]) => {
-      res.status(201).send(postedData);
+      res.status(201).send({ postedData });
     })
     .catch(next);
 };

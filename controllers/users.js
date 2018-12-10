@@ -16,6 +16,6 @@ exports.getUser = (req, res, next) => {
       if (user.length === 0) {
         return next({ status: 404 });
       }
-      res.status(200).send(user);
+      res.status(200).send({ user });
     });
 };

@@ -23,13 +23,13 @@ describe.only('/api', () => {
       .get('/Madonna')
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).to.eql('silly! no pages here');
+        expect(body.msg).to.eql('page not found');
       }));
     it('returns 404 for non-existant api sub-routeroute', () => request
       .get('/api/Madonna')
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).to.eql('silly! no pages here');
+        expect(body.msg).to.eql('page not found');
       }));
   });
   describe('/topics', () => {
@@ -83,7 +83,7 @@ describe.only('/api', () => {
         .send(input)
         .expect(404)
         .then(({ body }) => {
-          expect(body).to.eql({ msg: 'silly! no pages here' });
+          expect(body).to.eql({ msg: 'page not found' });
         }));
     });
     describe('GET /topics/:topic/articles', () => {
@@ -143,7 +143,7 @@ describe.only('/api', () => {
           .get('/api/topics/madonna/articles')
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).to.eql('silly! no pages here');
+            expect(body.msg).to.eql('page not found');
           }));
         it('incorrect METHOD returns 405 and error message', () => {
           const invalidMethods = ['delete', 'put', 'patch'];
@@ -184,7 +184,7 @@ describe.only('/api', () => {
         .send(newArticle)
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).to.eql('silly! no pages here');
+          expect(body.msg).to.eql('page not found');
         }));
       it('returns 400 if invalid data type', () => request
         .post(url)
@@ -219,7 +219,7 @@ describe.only('/api', () => {
           .get('/api/articles/12345/comments')
           .expect(404)
           .then(({ body }) => {
-            expect(body).to.eql({ msg: 'silly! no pages here' });
+            expect(body).to.eql({ msg: 'page not found' });
           }));
         it('incorrect METHOD returns 405 and error message', () => {
           const invalidMethods = ['delete', 'put', 'patch'];
@@ -299,7 +299,7 @@ describe.only('/api', () => {
           .send({ user_id: 1, body: 'pee is stored in the balls' })
           .expect(404)
           .then(({ body }) => {
-            expect(body).to.eql({ msg: 'silly! no pages here' });
+            expect(body).to.eql({ msg: 'page not found' });
           }));
         it('posts new article and 201s', () => request
           .post('/api/articles/1/comments')
@@ -360,7 +360,7 @@ describe.only('/api', () => {
           .send({ inc_votes: 3 })
           .expect(404)
           .then(({ body }) => {
-            expect(body).to.eql({ msg: 'silly! no pages here' });
+            expect(body).to.eql({ msg: 'page not found' });
           }));
       });
       describe('DELETE', () => {
@@ -376,7 +376,7 @@ describe.only('/api', () => {
           .delete('/api/comments/12345')
           .expect(404)
           .then(({ body }) => {
-            expect(body).to.eql({ msg: 'silly! no pages here' });
+            expect(body).to.eql({ msg: 'page not found' });
           }));
         it('deletes comment', () => request
           .delete('/api/comments/1')
@@ -409,7 +409,7 @@ describe.only('/api', () => {
         .get('/api/Madonna')
         .expect(404)
         .then(({ body }) => {
-          expect(body).to.eql({ msg: 'silly! no pages here' });
+          expect(body).to.eql({ msg: 'page not found' });
         }));
       it('incorrect METHOD returns 405 and error message', () => {
         const invalidMethods = ['post', 'patch', 'put', 'delete'];
@@ -434,7 +434,7 @@ describe.only('/api', () => {
         .get('/api/users/Madonna')
         .expect(404)
         .then(({ body }) => {
-          expect(body).to.eql({ msg: 'silly! no pages here' });
+          expect(body).to.eql({ msg: 'page not found' });
         }));
       it('incorrect METHOD returns 405 and error message', () => {
         const invalidMethods = ['post', 'patch', 'put', 'delete'];
@@ -454,7 +454,7 @@ describe.only('/api', () => {
         .get('/api/Madonna')
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).to.eql('silly! no pages here');
+          expect(body.msg).to.eql('page not found');
         }));
     });
     it('incorrect METHOD returns 405 and error message', () => {
@@ -530,7 +530,7 @@ describe.only('/api', () => {
         .get('/api/articles/234')
         .expect(404)
         .then(({ body }) => {
-          expect(body.msg).to.equal('silly! no pages here');
+          expect(body.msg).to.equal('page not found');
         }));
       it('incorrect METHOD returns 405 and error message', () => {
         const invalidMethods = ['post', 'put'];
@@ -601,7 +601,7 @@ describe.only('/api', () => {
           .send({ inc_votes: 1 })
           .expect(404)
           .then(({ body }) => {
-            expect(body.msg).to.equal('silly! no pages here');
+            expect(body.msg).to.equal('page not found');
           }));
       });
       describe('DELETE', () => {
@@ -616,7 +616,7 @@ describe.only('/api', () => {
           .delete('/api/articles/12344')
           .expect(404)
           .then(({ body }) => {
-            expect(body).to.eql({ msg: 'silly! no pages here' });
+            expect(body).to.eql({ msg: 'page not found' });
           }));
         it('400s where invalid parametric', () => request
           .delete('/api/articles/Madonna')
