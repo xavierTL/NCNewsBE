@@ -40,6 +40,7 @@ exports.getArticle = (req, res, next) => {
       'articles.article_id',
       'topic',
       'articles.votes',
+      'article.body',
       'articles.created_at',
     )
     .limit(limit || 10)
